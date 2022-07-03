@@ -1,0 +1,13 @@
+{
+  "name": "bob-pointcodec",
+  "version-string": "0.0.1",
+  "dependencies": [
+    "zpp-bits",
+    "draco",
+    "lz4",
+    "fastlz",
+    "zfp",
+    "zstd",
+    "spdlog"
+  ]
+}
