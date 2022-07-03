@@ -6,6 +6,8 @@
 #include <draco/compression/encode.h>
 #include <draco/compression/decode.h>
 
+#include <spdlog/spdlog.h>
+
 namespace bob::types {
 
   using namespace std::chrono;
@@ -27,10 +29,14 @@ namespace bob::types {
       using namespace draco;
       draco::PointCloudBuilder draco_builder;
       draco_builder.Start(this->size());
-      draco_builder.AddAttribute(PointAttribute::POSITION, 3, DataType::DT_INT16);
-      draco_builder.SetAttributeValuesForAllPoints(0, this->positions.data(), sizeof(short3));
-      draco_builder.AddAttribute(PointAttribute::COLOR, 4, DataType::DT_UINT8);
-      draco_builder.SetAttributeValuesForAllPoints(1, this->colors.data(), sizeof(color));
+      auto pos_attribute_id = draco_builder.AddAttribute(
+	  PointAttribute::POSITION, 3, DataType::DT_INT16);
+      draco_builder.SetAttributeValuesForAllPoints(
+	  pos_attribute_id, this->positions.data(), sizeof(short3));
+      auto col_attribute_id = draco_builder.AddAttribute(
+	  PointAttribute::COLOR, 4, DataType::DT_UINT8);
+      draco_builder.SetAttributeValuesForAllPoints(
+	  col_attribute_id, this->colors.data(), sizeof(color));
       // Finalize() below takes a bool specifying if we should run a
       // deduplication step. It's generally too slow to use in real-time
       auto draco_point_cloud = draco_builder.Finalize(false);
