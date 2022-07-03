@@ -12,16 +12,21 @@ find_path(ZPP_BITS_INCLUDE_DIRS "zpp_bits.h")
 
 set(SOURCE_FILES src/pointclouds.cc)
 
+# TODO static or shared builds switch
 # add_library(pointclouds SHARED ${SOURCE_FILES})
-add_library(bobpointclouds STATIC ${SOURCE_FILES})
+add_library(bob-pointclouds STATIC ${SOURCE_FILES})
+add_library(bob::pointclouds ALIAS bob-pointclouds)
 
-target_include_directories(bobpointclouds PUBLIC
+target_include_directories(bob-pointclouds PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-target_include_directories(bobpointclouds PRIVATE
+target_include_directories(bob-pointclouds PRIVATE
   ${ZPP_BITS_INCLUDE_DIRS})
-target_link_libraries(bobpointclouds PRIVATE draco)
+target_link_libraries(bob-pointclouds PRIVATE draco)
+
+install(TARGETS bob-pointclouds
+  DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR})
 
 # copy compile_commands.json for lsp integration 
 # (assume we don't need this on Windows)
