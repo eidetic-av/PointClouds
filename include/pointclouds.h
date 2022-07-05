@@ -54,6 +54,8 @@ namespace bob::types {
 
   private:
     void resize(std::size_t size);
+    auto compress() -> bytes;
+    static auto decompress(const bytes& buffer, unsigned long point_count) -> PointCloud;
   };
 
 }

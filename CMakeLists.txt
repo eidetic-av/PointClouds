@@ -10,9 +10,11 @@ if (WIN32)
 endif()
 
 find_path(ZPP_BITS_INCLUDE_DIRS "zpp_bits.h")
-find_package(draco CONFIG REQUIRED)
-
 set(SOURCE_FILES src/pointclouds.cc)
+
+# TODO define configuration option for draco lib impl
+find_package(draco CONFIG REQUIRED)
+set(SOURCE_FILES ${SOURCE_FILES} src/draco_codec.cc)
 
 add_library(pointclouds ${SOURCE_FILES})
 target_compile_definitions(pointclouds PUBLIC
