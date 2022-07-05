@@ -7,10 +7,29 @@ namespace bob::types {
 
   struct short3 {
     short x, y, z = 0;
+
+    bool operator==(const short3 other) const {
+      return x == other.x
+	&& y == other.y
+	&& z == other.z;
+    }
+    bool operator!=(const short3 other) const {
+      return !operator==(other);
+    }
   };
 
   struct color {
     unsigned char r, g, b, a = 0;
+
+    bool operator==(const color other) const {
+      return r == other.r
+	&& g == other.g
+	&& b == other.b
+	&& a == other.a;
+    }
+    bool operator!=(const color other) const {
+      return !operator==(other);
+    }
   };
 
   using bytes = std::vector<std::byte>;
