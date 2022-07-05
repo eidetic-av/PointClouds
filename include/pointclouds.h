@@ -17,6 +17,7 @@ namespace bob::types {
 
   struct PointCloudPacket {
     long timestamp;
+    unsigned long point_count;
     bool compressed;
     bytes data;
   };

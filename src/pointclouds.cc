@@ -19,8 +19,10 @@ namespace bob::types {
 
   auto PointCloud::serialize(bool compress) -> bytes {
     auto now = system_clock::now().time_since_epoch();
+    auto point_count = size();
     PointCloudPacket packet {
       duration_cast<milliseconds>(now).count(),
+      point_count,
       compress
     };
     if (compress) {
@@ -77,6 +79,7 @@ namespace bob::types {
     PointCloudPacket packet;
     auto zpp_deserialize = zpp::bits::in(buffer);
     zpp_deserialize(packet).or_throw();
+    auto point_count = packet.point_count;
     // then decode the internal data buffer differently based on whether the
     // packet is compressed or not, and move the resulting points and colors
     // into a PointCloud class instance
