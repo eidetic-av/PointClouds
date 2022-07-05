@@ -22,10 +22,10 @@ target_include_directories(pointclouds PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-target_include_directories(pointclouds PRIVATE
-  ${ZPP_BITS_INCLUDE_DIRS})
+target_include_directories(pointclouds PRIVATE ${ZPP_BITS_INCLUDE_DIRS})
 target_link_libraries(pointclouds PRIVATE draco)
 
+# set var that allow us to link easier in projects that consume this lib
 set(BOB_POINTCLOUDS_LIB "bob-pointclouds draco" CACHE INTERNAL "")
 
 include(GNUInstallDirs)
@@ -44,6 +44,12 @@ install(EXPORT bob-pointclouds-config
     DESTINATION "${CMAKE_INSTALL_DATADIR}/bob-pointclouds/cmake"
     NAMESPACE bob::
 )
+
+find_package(ut CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+add_executable(test ${SOURCE_FILES} src/test.cc)
+target_include_directories(test PRIVATE ${ZPP_BITS_INCLUDE_DIRS})
+target_link_libraries(test PRIVATE draco boost::ut fmt::fmt)
 
 # copy compile_commands.json for lsp integration 
 # (assume we don't need this on Windows)
