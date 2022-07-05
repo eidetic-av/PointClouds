@@ -31,9 +31,9 @@ int main() {
   };
   expect(point_cloud.size() == 2);
 
-  const bool test_compression = false;
-  #ifdef WITH_DRACO
-  test_compression = true; 
+  bool test_compression = true; 
+  #ifndef WITH_CODEC
+  test_compression = false;
   #endif
 
   "serialization"_test = [&point_cloud] (bool with_compression) {

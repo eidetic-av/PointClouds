@@ -8,6 +8,10 @@
 	    "description": "Build using google's Draco point-cloud codec",
 	    "dependencies": [ "draco" ]
 	},
+	"zstd": {
+	    "description": "Build using zstd codec",
+	    "dependencies": [ "zstd" ]
+	},
 	"tests": {
 	    "description": "Build with unit tests",
 	    "dependencies": [ "bext-ut", "fmt" ]

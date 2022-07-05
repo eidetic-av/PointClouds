@@ -1,12 +1,8 @@
 #include "../include/pointclouds.h"
 #include "draco/attributes/point_attribute.h"
-#include <chrono>
-#include <zpp_bits.h>
 #include <draco/point_cloud/point_cloud_builder.h>
 #include <draco/compression/encode.h>
 #include <draco/compression/decode.h>
-
-#include <spdlog/spdlog.h>
 
 namespace bob::types {
 
