@@ -12,11 +12,6 @@ namespace bob::types {
 
   using namespace std::chrono;
 
-  void PointCloud::resize(std::size_t size) {
-    positions.resize(size);
-    colors.resize(size);
-  }
-
   auto PointCloud::serialize(bool compress) -> bytes {
     auto now = system_clock::now().time_since_epoch();
     auto point_count = size();

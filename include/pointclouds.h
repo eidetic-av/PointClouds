@@ -53,7 +53,6 @@ namespace bob::types {
     static auto deserialize(const bytes &buffer) -> PointCloud;
 
   private:
-    void resize(std::size_t size);
     auto compress() -> bytes;
     static auto decompress(const bytes& buffer, unsigned long point_count) -> PointCloud;
   };
