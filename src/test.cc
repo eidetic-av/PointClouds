@@ -31,10 +31,15 @@ int main() {
   };
   expect(point_cloud.size() == 2);
 
+  const bool test_compression = false;
+  #ifdef WITH_DRACO
+  test_compression = true; 
+  #endif
+
   "serialization"_test = [&point_cloud] (bool with_compression) {
     bytes buffer = point_cloud.serialize(with_compression);
     expect(!buffer.empty());
-  } | std::vector{ false, true };
+  } | std::vector{ false, test_compression };
 
   "deserialization"_test = [&point_cloud] (bool with_compression) {
     bytes buffer = point_cloud.serialize(with_compression);
@@ -53,5 +58,5 @@ int main() {
       auto in_color = point_cloud.colors[c++];
       expect(out_color == in_color) << "lost color value";
     }
-  } | std::vector{ false, true };
+  } | std::vector{ false, test_compression };
 }

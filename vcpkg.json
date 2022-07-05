@@ -1,10 +1,16 @@
 {
-  "name": "bob-pointcodec",
-  "version-string": "0.0.1",
-  "dependencies": [
-    "zpp-bits",
-    "draco",
-    "bext-ut",
-    "fmt"
-  ]
+    "name": "bob-pointcodec",
+    "version-string": "0.0.1",
+    "dependencies": [ "zpp-bits" ],
+    "default-features": [ "draco" ],
+    "features": {
+	"draco": {
+	    "description": "Build using google's Draco point-cloud codec",
+	    "dependencies": [ "draco" ]
+	},
+	"tests": {
+	    "description": "Build with unit tests",
+	    "dependencies": [ "bext-ut", "fmt" ]
+	}
+    }
 }
