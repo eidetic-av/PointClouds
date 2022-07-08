@@ -57,6 +57,8 @@ if (WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdeclspec")
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
+
 # --------------------------------------
 # load vcpkg packages ------------------
 # --------------------------------------
@@ -97,8 +99,8 @@ export(TARGETS pointclouds
     FILE "${CMAKE_CURRENT_BINARY_DIR}/bob-pointclouds-config.cmake"
 )
 install(EXPORT bob-pointclouds-config
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/bob-pointclouds/cmake"
     NAMESPACE bob::
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/bob-pointclouds/cmake"
 )
 
 # export var that allow us to link easier in projects that consume this lib
@@ -112,6 +114,8 @@ if(BUILD_TESTS)
     add_executable(test ${SOURCE_FILES} ${TEST_SOURCE})
     target_include_directories(test PRIVATE ${ZPP_BITS_INCLUDE_DIRS})
     target_link_libraries(test PRIVATE ${LINK_LIBS} ${TEST_LIBS})
+    add_custom_command(TARGET test POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+      copy_directory ${CMAKE_SOURCE_DIR}/extra/test $<TARGET_FILE_DIR:test>)
 endif()
 
 # --------------------------------------

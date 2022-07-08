@@ -35,9 +35,9 @@ namespace bob::types {
   using bytes = std::vector<std::byte>;
 
   struct PointCloudPacket {
-    long timestamp;
-    unsigned long point_count;
-    bool compressed;
+    // long timestamp;
+    // unsigned long point_count;
+    // bool compressed;
     bytes data;
   };
 
