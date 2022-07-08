@@ -4,9 +4,13 @@ cmake_minimum_required(VERSION 3.23.0)
 # parse and set up configuration options
 # --------------------------------------
 
-set(CODEC_COUNT 0)
-
 option(WITH_DRACO "Build using Draco codec" ON)
+option(WITH_ZSTD "Build using zstd codec" OFF)
+if (WITH_ZSTD)
+  set(WITH_DRACO OFF)
+endif()
+
+set(CODEC_COUNT 0)
 if(WITH_DRACO)
   list(APPEND VCPKG_MANIFEST_FEATURES draco)
   list(APPEND SOURCE_FILES src/draco_codec.cc)
@@ -15,7 +19,6 @@ if(WITH_DRACO)
   MATH(EXPR CODEC_COUNT "${CODEC_COUNT}+1")
 endif()
 
-option(WITH_ZSTD "Build using zstd codec" OFF)
 if(WITH_ZSTD)
   list(APPEND VCPKG_MANIFEST_FEATURES "zstd")
   list(APPEND PACKAGES zstd)
@@ -28,10 +31,7 @@ endif()
 if(${CODEC_COUNT} GREATER 1)
   message(FATAL_ERROR
     "CODEC_COUNT > 1: \
-    This library can only be configured with a single codec. \
-    By default, it's built with Draco. If you have supplied a \
-    configuration variable to build with an alternate codec, \
-    you must also set WITH_DRACO to OFF.")
+    This library can only be configured with a single codec.")
 elseif(${CODEC_COUNT} EQUAL 1)
   add_definitions(-DWITH_CODEC)
 endif()
