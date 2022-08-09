@@ -57,7 +57,7 @@ if (WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdeclspec")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
 
 # --------------------------------------
 # load vcpkg packages ------------------
@@ -111,7 +111,11 @@ set(BOB_POINTCLOUDS_LIB "bob-pointclouds ${LINK_LIBS}" CACHE INTERNAL "")
 # --------------------------------------
 
 if(BUILD_TESTS)
-    add_executable(test ${SOURCE_FILES} ${TEST_SOURCE})
+  add_definitions(-DZSTD_SUPPORT)
+  add_executable(test ${SOURCE_FILES} ${TEST_SOURCE})
+    # bitshuffle/src/bitshuffle.c bitshuffle/src/bitshuffle_core.c bitshuffle/src/iochain.c
+    # bitshuffle/src/bshuf_h5filter.c bitshuffle/src/bshuf_h5plugin.c bitshuffle/src/hdf5_dl.c
+    # bitshuffle/lz4/lz4.c)
     target_include_directories(test PRIVATE ${ZPP_BITS_INCLUDE_DIRS})
     target_link_libraries(test PRIVATE ${LINK_LIBS} ${TEST_LIBS})
     add_custom_command(TARGET test POST_BUILD COMMAND ${CMAKE_COMMAND} -E

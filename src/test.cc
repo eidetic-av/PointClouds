@@ -11,19 +11,6 @@ int main() {
 
   using namespace bob::types;
 
-  // load the demo.pc file, which is an uncompressed, serialized PointCloud
-
-  // std::ifstream demo_file("demo.pc", std::ios::in | std::ios::binary);
-  // demo_file.seekg(0, std::ios::end);
-  // auto demo_file_size = demo_file.tellg();
-  // demo_file.seekg(0, std::ios::beg);
-  // bytes demo_buffer(demo_file_size);
-  // demo_file.read((char*) demo_buffer.data(), demo_file_size);
-  // spdlog::info("demo.pc buffer size: {}", demo_buffer.size());
-  // auto demo_point_cloud = PointCloud::deserialize(demo_buffer);
-  // spdlog::info("demo.pc point count: {}", demo_point_cloud.size());
-  // return 0;
-
 
   "initialisation"_test = [] {
     PointCloud point_cloud {
@@ -88,6 +75,44 @@ int main() {
     }
   } | compression_flags;
 
-  // "demo_point_cloud_in_out"_test = [&demo_point_cloud] (bool with_compression) {
-  // } | compression_flags;
+  // load the *.pc demo files, which are uncompressed, serialized PointClouds
+  std::vector<PointCloud> demo_clouds;
+  std::vector<unsigned long> demo_cloud_sizes;
+  int demo_count = 50;
+  for (int i = 0; i < demo_count; i++) {
+    auto filename = fmt::format("demo_{}.pc", i);
+    std::ifstream file(filename, std::ios::in | std::ios::binary);
+    file.seekg(0, std::ios::end);
+    auto file_size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    bytes file_buffer(file_size);
+    file.read(std::bit_cast<char*>(file_buffer.data()), file_size);
+    demo_clouds.push_back(PointCloud::deserialize(file_buffer));
+    demo_cloud_sizes.push_back(file_size);
+  }
+
+  for (int i = 0; i < demo_count; i++) {
+    auto demo_point_cloud = &demo_clouds.at(i);
+    using namespace std::chrono;
+    auto compress_start = high_resolution_clock::now();
+    auto buffer = demo_point_cloud->serialize(true);
+    auto compress_end = high_resolution_clock::now();
+    auto compress_duration = duration_cast<milliseconds>(
+	compress_end - compress_start);
+    spdlog::info("compressing {} took {}ms", i,
+	compress_duration.count());
+    auto compression_ratio = (float) demo_cloud_sizes.at(i) / buffer.size();
+    spdlog::info(" --> compression ratio: {}", compression_ratio);
+    auto decompress_start = high_resolution_clock::now();
+    auto out_cloud = PointCloud::deserialize(buffer);
+    auto decompress_end = high_resolution_clock::now();
+    auto decompress_duration = duration_cast<milliseconds>(
+	decompress_end - decompress_start);
+    spdlog::info("decompressing {} took {}ms", i,
+	decompress_duration.count());
+  }
+
+  "demo_cloud_in_out"_test = [&demo_clouds] (bool with_compression) {
+
+  } | compression_flags;
 }
