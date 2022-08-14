@@ -11,7 +11,7 @@ namespace bob::types {
 
   using namespace std::chrono;
 
-  auto PointCloud::serialize(bool compress) -> bytes {
+  auto PointCloud::serialize(bool compress) const -> bytes {
     auto now = system_clock::now().time_since_epoch();
     auto point_count = size();
 

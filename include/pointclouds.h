@@ -46,10 +46,10 @@ namespace bob::types {
     std::vector<short3> positions;
     std::vector<color> colors;
 
-    auto size() { return positions.size(); }
-    auto empty() { return positions.empty(); }
+    auto size() const { return positions.size(); }
+    auto empty() const { return positions.empty(); }
 
-    auto serialize(bool compress = false) -> bytes;
+    auto serialize(bool compress = false) const -> bytes;
     static auto deserialize(const bytes &buffer) -> PointCloud;
 
   private:
