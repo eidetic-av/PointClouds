@@ -5,8 +5,6 @@
 #include <iostream>
 #endif
 
-#include <spdlog/spdlog.h>
-
 namespace bob::types {
 
   using namespace std::chrono;
