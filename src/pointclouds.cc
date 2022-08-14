@@ -70,4 +70,36 @@ namespace bob::types {
     deserialize_inner(point_cloud).or_throw();
     return point_cloud;
   }
+
+  PointCloud operator+(PointCloud const& lhs, PointCloud const& rhs) {
+    std::vector<short3> positions;
+    std::vector<color> colors;
+
+    const auto lhs_size = lhs.positions.size();
+    const auto rhs_size = rhs.positions.size();
+
+    positions.reserve(lhs_size + rhs_size);
+    positions.insert(positions.end(), lhs.positions.begin(), lhs.positions.end());
+    positions.insert(positions.end(), rhs.positions.begin(), rhs.positions.end());
+
+    colors.reserve(lhs_size + rhs_size);
+    colors.insert(colors.end(), lhs.colors.begin(), lhs.colors.end());
+    colors.insert(colors.end(), rhs.colors.begin(), rhs.colors.end());
+
+    return PointCloud{ positions, colors };
+  }
+
+  PointCloud operator+=(PointCloud& lhs, PointCloud const& rhs) {
+    const auto lhs_size = lhs.positions.size();
+    const auto rhs_size = rhs.positions.size();
+
+    lhs.positions.reserve(lhs_size + rhs_size);
+    lhs.positions.insert(lhs.positions.end(), rhs.positions.begin(), rhs.positions.end());
+
+    lhs.colors.reserve(lhs_size + rhs_size);
+    lhs.colors.insert(lhs.colors.end(), rhs.colors.begin(), rhs.colors.end());
+
+    return lhs;
+  }
+
 }

@@ -57,4 +57,7 @@ namespace bob::types {
     static auto decompress(const bytes& buffer, unsigned long point_count) -> PointCloud;
   };
 
+  PointCloud operator+(PointCloud const& lhs, PointCloud const& rhs);
+  PointCloud operator+=(PointCloud& lhs, const PointCloud& rhs);
+
 }
