@@ -127,7 +127,9 @@ endif()
 # --------------------------------------
 
 # copy compile_commands.json for lsp integration 
-add_custom_target(copy-compile-commands ALL
-  ${CMAKE_COMMAND} -E copy_if_different
-  ${CMAKE_BINARY_DIR}/compile_commands.json
-  ${CMAKE_CURRENT_LIST_DIR})
+if (NOT WIN32)
+  add_custom_target(copy-compile-commands ALL
+    ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_BINARY_DIR}/compile_commands.json
+    ${CMAKE_CURRENT_LIST_DIR})
+endif()
