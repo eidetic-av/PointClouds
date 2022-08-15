@@ -11,6 +11,7 @@ namespace bob::types {
 
   auto PointCloud::serialize(bool compress) const -> bytes {
     auto now = system_clock::now().time_since_epoch();
+    auto now_ms = static_cast<long>(duration_cast<milliseconds>(now).count());
     auto point_count = size();
 
 #ifdef WITH_CODEC
@@ -18,7 +19,7 @@ namespace bob::types {
       // PointCloud::compress is implemented by whatever codec we choose to
       // build the lib with
       PointCloudPacket packet {
-	duration_cast<milliseconds>(now).count(),
+	now_ms,
 	point_count,
 	compress,
 	this->compress()
@@ -32,7 +33,7 @@ namespace bob::types {
     auto [point_cloud_bytes, serialize_inner] = zpp::bits::data_out();
     serialize_inner(*this).or_throw();
     PointCloudPacket packet {
-      duration_cast<milliseconds>(now).count(),
+      now_ms,
       point_count,
       compress,
       std::move(point_cloud_bytes)
