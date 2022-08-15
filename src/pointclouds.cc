@@ -11,8 +11,8 @@ namespace bob::types {
 
   auto PointCloud::serialize(bool compress) const -> bytes {
     auto now = system_clock::now().time_since_epoch();
-    auto now_ms = static_cast<long>(duration_cast<milliseconds>(now).count());
-    auto point_count = size();
+    auto now_ms = static_cast<unsigned long>(duration_cast<milliseconds>(now).count());
+    auto point_count = static_cast<unsigned long>(size());
 
 #ifdef WITH_CODEC
     if (compress) {
