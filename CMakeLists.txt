@@ -14,7 +14,7 @@ set(CODEC_COUNT 0)
 if(WITH_DRACO)
   list(APPEND VCPKG_MANIFEST_FEATURES draco)
   list(APPEND SOURCE_FILES src/draco_codec.cc)
-  list(APPEND LINK_LIBS draco)
+  list(APPEND LINK_LIBS draco::draco)
   list(APPEND PACKAGES draco)
   MATH(EXPR CODEC_COUNT "${CODEC_COUNT}+1")
   message(STATUS "Draco codec enabled")
@@ -116,14 +116,18 @@ set(BOB_POINTCLOUDS_LIB "bob-pointclouds ${LINK_LIBS}" CACHE INTERNAL "")
 
 if(BUILD_TESTS)
   add_definitions(-DZSTD_SUPPORT)
+	if (WIN32)
+		# https://github.com/boost-ext/ut/pull/447
+		add_compile_definitions(BOOST_UT_DISABLE_MODULE)
+	endif()
   add_executable(test ${SOURCE_FILES} ${TEST_SOURCE})
     # bitshuffle/src/bitshuffle.c bitshuffle/src/bitshuffle_core.c bitshuffle/src/iochain.c
     # bitshuffle/src/bshuf_h5filter.c bitshuffle/src/bshuf_h5plugin.c bitshuffle/src/hdf5_dl.c
     # bitshuffle/lz4/lz4.c)
     target_include_directories(test PRIVATE ${ZPP_BITS_INCLUDE_DIRS})
     target_link_libraries(test PRIVATE ${LINK_LIBS} ${TEST_LIBS})
-    add_custom_command(TARGET test POST_BUILD COMMAND ${CMAKE_COMMAND} -E
-      copy_directory ${CMAKE_SOURCE_DIR}/extra/test $<TARGET_FILE_DIR:test>)
+		#add_custom_command(TARGET test POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+		#  copy_directory ${CMAKE_SOURCE_DIR}/extra/test $<TARGET_FILE_DIR:test>)
 endif()
 
 # --------------------------------------

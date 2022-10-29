@@ -3,7 +3,6 @@
 #include <fmt/format.h>
 #include <zpp_bits.h>
 #include <fstream>
-#include <spdlog/spdlog.h>
 
 int main() {
   using namespace boost::ut;
