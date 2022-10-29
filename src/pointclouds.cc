@@ -16,9 +16,9 @@ namespace bob::types {
       // PointCloud::compress is implemented by whatever codec we choose to
       // build the lib with
       PointCloudPacket packet {
-	duration_cast<milliseconds>(now).count(),
-	point_count,
-	compress,
+	static_cast<unsigned int>(duration_cast<milliseconds>(now).count()),
+	static_cast<unsigned int>(point_count),
+	static_cast<unsigned int>(compress ? 1 : 0),
 	this->compress()
       };
       auto [output_data, zpp_serialize] = zpp::bits::data_out();
@@ -30,9 +30,9 @@ namespace bob::types {
     auto [point_cloud_bytes, serialize_inner] = zpp::bits::data_out();
     serialize_inner(*this).or_throw();
     PointCloudPacket packet {
-      duration_cast<milliseconds>(now).count(),
-      point_count,
-      compress,
+      static_cast<unsigned int>(duration_cast<milliseconds>(now).count()),
+      static_cast<unsigned int>(point_count),
+      static_cast<unsigned int>(compress ? 1 : 0),
       std::move(point_cloud_bytes)
     };
     auto [output_data, zpp_serialize] = zpp::bits::data_out();

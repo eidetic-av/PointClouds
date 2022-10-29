@@ -40,9 +40,9 @@ struct short3 {
   using bytes = std::vector<std::byte>;
 
   struct PointCloudPacket {
-    long timestamp;
-    unsigned long point_count;
-    bool compressed;
+    unsigned int timestamp;
+    unsigned int point_count;
+    unsigned int compressed;
     bytes data;
   };
 
