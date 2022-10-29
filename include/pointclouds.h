@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <cstddef>
 #include <vector>
 
@@ -39,13 +40,6 @@ struct short3 {
 
   using bytes = std::vector<std::byte>;
 
-  struct PointCloudPacket {
-    unsigned int timestamp;
-    unsigned int point_count;
-    unsigned int compressed;
-    bytes data;
-  };
-
   class PointCloud {
   public:
     std::vector<short3> positions;
@@ -64,5 +58,14 @@ struct short3 {
 
   PointCloud operator+(PointCloud const& lhs, PointCloud const& rhs);
   PointCloud operator+=(PointCloud& lhs, const PointCloud& rhs);
+
+  struct PointCloudPacket {
+    // out packet needs these explicitly sized types to ensure portability
+    // between unix and windows systems
+    uint64_t timestamp;
+    uint64_t point_count;
+    uint8_t compressed;
+    bytes data;
+  };
 
 }
