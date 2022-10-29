@@ -39,6 +39,13 @@ struct short3 {
 
   using bytes = std::vector<std::byte>;
 
+  struct PointCloudPacket {
+    long timestamp;
+    unsigned long point_count;
+    bool compressed;
+    bytes data;
+  };
+
   class PointCloud {
   public:
     std::vector<short3> positions;
