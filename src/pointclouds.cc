@@ -45,8 +45,6 @@ namespace bob::types {
     PointCloudPacket packet;
     auto zpp_deserialize = zpp::bits::in(buffer);
     zpp_deserialize(packet).or_throw();
-    std::cout << "Buffer size: " << buffer.size() << "\n";
-    std::cout << "Packet data size: " << packet.data.size() << "\n";
     // then decode the internal data buffer differently based on whether the
     // packet is compressed or not, and move the resulting points and colors
     // into a PointCloud class instance
