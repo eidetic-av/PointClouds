@@ -12,9 +12,9 @@ namespace bob::types {
     PointCloudBuilder draco_builder;
     draco_builder.Start(size());
     auto pos_attribute_id = draco_builder.AddAttribute(
-	PointAttribute::POSITION, 3, DataType::DT_INT16);
+	PointAttribute::POSITION, 4, DataType::DT_INT16);
     draco_builder.SetAttributeValuesForAllPoints(
-	pos_attribute_id, positions.data(), sizeof(short3));
+	pos_attribute_id, positions.data(), sizeof(position));
     auto col_attribute_id = draco_builder.AddAttribute(
 	PointAttribute::COLOR, 4, DataType::DT_UINT8);
     draco_builder.SetAttributeValuesForAllPoints(
@@ -47,7 +47,7 @@ namespace bob::types {
     auto draco_positions = draco_point_cloud->GetAttributeByUniqueId(positions_attr_id);
     auto draco_colors = draco_point_cloud->GetAttributeByUniqueId(colors_attr_id);
     // copy point data from the draco type into our PointCloud
-    auto input_positions_ptr = std::bit_cast<short3*>(draco_positions->buffer()->data());
+    auto input_positions_ptr = std::bit_cast<position*>(draco_positions->buffer()->data());
     auto input_colors_ptr = std::bit_cast<color*>(draco_colors->buffer()->data());
     PointCloud point_cloud;
     point_cloud.positions.assign(input_positions_ptr, input_positions_ptr + point_count);

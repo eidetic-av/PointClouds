@@ -15,13 +15,14 @@ namespace bob::types {
    bool operator!=(const uint2 other) const { return !operator==(other); }
  };
 
-struct short3 {
+struct position {
   short x, y, z = 0;
+  short __pad = 0;
 
-  bool operator==(const short3 other) const {
+  bool operator==(const position other) const {
     return x == other.x && y == other.y && z == other.z;
   }
-  bool operator!=(const short3 other) const { return !operator==(other); }
+  bool operator!=(const position other) const { return !operator==(other); }
 };
 
   struct color {
@@ -42,7 +43,7 @@ struct short3 {
 
   class PointCloud {
   public:
-    std::vector<short3> positions;
+    std::vector<position> positions;
     std::vector<color> colors;
 
     auto size() const { return positions.size(); }

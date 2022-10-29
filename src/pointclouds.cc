@@ -68,7 +68,7 @@ namespace bob::types {
   }
 
   PointCloud operator+(PointCloud const& lhs, PointCloud const& rhs) {
-    std::vector<short3> positions;
+    std::vector<position> positions;
     std::vector<color> colors;
 
     const auto lhs_size = lhs.positions.size();
