@@ -5,18 +5,23 @@
 
 namespace bob::types {
 
-  struct short3 {
-    short x, y, z = 0;
+ struct uint2 {
+   unsigned int x, y = 0;
 
-    bool operator==(const short3 other) const {
-      return x == other.x
-	&& y == other.y
-	&& z == other.z;
-    }
-    bool operator!=(const short3 other) const {
-      return !operator==(other);
-    }
-  };
+   bool operator==(const uint2 other) const {
+     return x == other.x && y == other.y;
+   }
+   bool operator!=(const uint2 other) const { return !operator==(other); }
+ };
+
+struct short3 {
+  short x, y, z = 0;
+
+  bool operator==(const short3 other) const {
+    return x == other.x && y == other.y && z == other.z;
+  }
+  bool operator!=(const short3 other) const { return !operator==(other); }
+};
 
   struct color {
     unsigned char r, g, b, a = 0;
@@ -49,12 +54,12 @@ namespace bob::types {
     auto size() const { return positions.size(); }
     auto empty() const { return positions.empty(); }
 
-    auto serialize(bool compress = false) const -> bytes;
-    static auto deserialize(const bytes &buffer) -> PointCloud;
+    bytes serialize(bool compress = false) const;
+    static PointCloud deserialize(const bytes &buffer);
 
   private:
-    auto compress() -> bytes;
-    static auto decompress(const bytes& buffer, unsigned long point_count) -> PointCloud;
+    bytes compress() const;
+    static PointCloud decompress(const bytes& buffer, unsigned long point_count);
   };
 
   PointCloud operator+(PointCloud const& lhs, PointCloud const& rhs);

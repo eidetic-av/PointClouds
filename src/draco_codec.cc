@@ -8,7 +8,7 @@ namespace bob::types {
 
   using namespace draco;
 
-  auto PointCloud::compress() -> bytes {
+  bytes PointCloud::compress() const {
     PointCloudBuilder draco_builder;
     draco_builder.Start(size());
     auto pos_attribute_id = draco_builder.AddAttribute(
@@ -36,7 +36,7 @@ namespace bob::types {
     return output_data;
   }
 
-  auto PointCloud::decompress(const bytes &buffer, unsigned long point_count) -> PointCloud {
+  PointCloud PointCloud::decompress(const bytes &buffer, unsigned long point_count) {
     Decoder decoder;
     DecoderBuffer in_buffer;
     auto buffer_ptr = std::bit_cast<const char *>(buffer.data());
