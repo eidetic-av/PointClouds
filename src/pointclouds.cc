@@ -9,6 +9,19 @@ namespace bob::types {
 
   using namespace std::chrono;
 
+  struct PointCloudPacket {
+
+    constexpr static auto serialize(auto &archive, auto &self) {
+      return archive(self.timestamp, self.point_count, self.compressed,
+		     self.data);
+    }
+
+    long timestamp;
+    unsigned long point_count;
+    bool compressed;
+    bytes data;
+  };
+
   auto PointCloud::serialize(bool compress) const -> bytes {
     auto now = system_clock::now().time_since_epoch();
     auto point_count = size();
