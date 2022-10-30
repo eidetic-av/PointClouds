@@ -12,12 +12,13 @@ int main() {
 
   "initialisation"_test = [] {
     PointCloud point_cloud {
-	{{-1000, 2000, 3000}, {5, 0, -400}, {100, 20, 56}},
+      {{-1000, 2000, 3000}, {5, 0, -400}, {100, 20, 56}},
 	{{255, 200, 10, 255}, {0, 100, 200, 127}, {255, 255, 255, 50}}
     };
     expect(point_cloud.size() == 3);
     expect(!point_cloud.empty());
     expect(point_cloud.positions[1].z == -400);
+    expect(point_cloud.positions[3].__pad == 0);
     expect(point_cloud.colors[2].a == 50);
   };
 
