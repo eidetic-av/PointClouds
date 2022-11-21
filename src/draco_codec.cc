@@ -30,7 +30,7 @@ namespace bob::types {
     encoder.SetSpeedOptions(-1, 10);
     EncoderBuffer out_buffer;
     encoder.EncodePointCloudToBuffer(*draco_point_cloud, &out_buffer);
-    auto buffer_ptr = std::bit_cast<std::byte*>(out_buffer.data());
+    auto buffer_ptr = reinterpret_cast<const std::byte*>(out_buffer.data());
     bytes output_data;
     output_data.assign(buffer_ptr, buffer_ptr + out_buffer.size());
     return output_data;
@@ -39,7 +39,7 @@ namespace bob::types {
   PointCloud PointCloud::decompress(const bytes &buffer, unsigned long point_count) {
     Decoder decoder;
     DecoderBuffer in_buffer;
-    auto buffer_ptr = std::bit_cast<const char *>(buffer.data());
+    auto buffer_ptr = reinterpret_cast<const char *>(buffer.data());
     in_buffer.Init(buffer_ptr, buffer.size());
     auto draco_point_cloud = decoder.DecodePointCloudFromBuffer(&in_buffer).value();
     auto positions_attr_id = draco_point_cloud->GetNamedAttributeId(PointAttribute::POSITION);
@@ -47,8 +47,8 @@ namespace bob::types {
     auto draco_positions = draco_point_cloud->GetAttributeByUniqueId(positions_attr_id);
     auto draco_colors = draco_point_cloud->GetAttributeByUniqueId(colors_attr_id);
     // copy point data from the draco type into our PointCloud
-    auto input_positions_ptr = std::bit_cast<position*>(draco_positions->buffer()->data());
-    auto input_colors_ptr = std::bit_cast<color*>(draco_colors->buffer()->data());
+    auto input_positions_ptr = reinterpret_cast<position*>(draco_positions->buffer()->data());
+    auto input_colors_ptr = reinterpret_cast<color*>(draco_colors->buffer()->data());
     PointCloud point_cloud;
     point_cloud.positions.assign(input_positions_ptr, input_positions_ptr + point_count);
     point_cloud.colors.assign(input_colors_ptr, input_colors_ptr + point_count);
