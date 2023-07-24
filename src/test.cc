@@ -50,12 +50,12 @@ int main() {
   compression_flags.push_back(true);
 #endif
 
-  "serialization"_test = [&point_cloud] (bool with_compression) {
+  "serialization"_test = [point_cloud] (bool with_compression) {
     bytes buffer = point_cloud.serialize(with_compression);
     expect(!buffer.empty());
   } | compression_flags;
 
-  "deserialization"_test = [&point_cloud] (bool with_compression) {
+  "deserialization"_test = [point_cloud] (bool with_compression) {
     bytes buffer = point_cloud.serialize(with_compression);
     auto point_cloud_out = PointCloud::deserialize(buffer);
     expect(!point_cloud_out.empty());
