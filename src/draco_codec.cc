@@ -3,6 +3,7 @@
 #include <draco/point_cloud/point_cloud_builder.h>
 #include <draco/compression/encode.h>
 #include <draco/compression/decode.h>
+#include <draco/compression/draco_compression_options.h>
 
 namespace bob::types {
 
