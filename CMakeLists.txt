@@ -79,7 +79,7 @@ find_path(ZPP_BITS_INCLUDE_DIRS "zpp_bits.h")
 
 list(APPEND SOURCE_FILES src/pointclouds.cc)
 
-add_library(pointclouds ${SOURCE_FILES})
+add_library(pointclouds STATIC ${SOURCE_FILES})
 target_compile_definitions(pointclouds PUBLIC
   "POINTCLOUDS_DEBUG=$<CONFIG:Debug>")
 
